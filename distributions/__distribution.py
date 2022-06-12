@@ -4,16 +4,14 @@ import matplotlib.pyplot as plt
 
 class Distribution:
 
-    def __init__(self, dataset, is_sample=True):
+    def __init__(self, dataset):
         """Generic distribution class for calculating and visualizing a probability distribution.
 
         :param dataset: an 1D array-like numeric dataset.
-        :param is_sample: whether the data represents a sample or population. Default is True.
         """
 
         self.__data = np.asarray(dataset).flatten()
-        self.__mean = self.mean_of(dataset)
-        self.__std = self.standard_deviation_of(dataset, is_sample, self.mean)
+        self.__mean = self.__std = 0.
 
     @property
     def data(self):
@@ -44,12 +42,6 @@ class Distribution:
                 line = file.readline()
 
         return cls(dataset, is_sample)
-
-    @staticmethod
-    def mean_of(dataset) -> float: ...
-
-    @staticmethod
-    def standard_deviation_of(dataset, is_sample: bool, mean_value: float = None) -> float: ...
 
     def pdf(self, x: float) -> float: ...
 

@@ -11,7 +11,9 @@ class NormalDistribution(Distribution):
         :param is_sample: whether the data represents a sample or population. Default is True.
         """
 
-        super().__init__(dataset, is_sample=is_sample)
+        super().__init__(dataset)
+        self.__mean = self.mean_of(dataset)
+        self.__std = self.standard_deviation_of(dataset, is_sample, self.mean)
 
     @staticmethod
     def mean_of(dataset):
