@@ -82,17 +82,31 @@ class Binomial(Distribution):
         return math.sqrt(self.n * self.p * self.q)
 
     def pdf(self, x: int):
-        """Return the result of the value mapped into Probability Density Function
+        """Return the result of the value mapped into Probability Mass Function
         of the applied binomial distribution.
 
         For a binomial distribution with n trials and probability p,
         the Probability Density Function calculates the likelihood of getting x positive outcomes.
 
-        :param x: a point for calculating the Probability Density Function.
-        :return: the output of Probability Density Function.
+        :param x: a point for calculating the Probability Mass Function.
+        :return: the output of Probability Mass Function.
         """
 
+        if x < 0 or type(x) is not int:
+            raise ValueError("A positive integer expected.")
+        elif x > self.n:
+            raise ValueError(f"The input value must be smaller than or equal {self.n}.")
+
         return math.comb(self.n, x) * self.p ** x * self.q ** (self.n - x)
+
+    def probability(self, k: int):
+        """Return the probability of getting exactly k successes in n independent Bernoulli trials.
+
+        :param k: number of successes.
+        :return: probability of k.
+        """
+
+        return self.pdf(k)
 
     # def __add__(self, other):
     #     mean = self.mean + other.mean
