@@ -1,0 +1,4 @@
+distributions/*.txt
+distributions/test_gaussian.py
+distributions/test_binomial.py
+.pytest_cache/

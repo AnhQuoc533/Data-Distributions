@@ -11,7 +11,7 @@ class BinomialDistribution(Distribution):
         :param is_sample: whether the data represents a sample or population. Default is True.
         """
 
-        super().__init__(dataset, is_sample=is_sample)
+        super().__init__(dataset, )
 
     @staticmethod
     def mean_of(dataset):
