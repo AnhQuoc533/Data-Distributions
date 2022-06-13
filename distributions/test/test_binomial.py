@@ -1,4 +1,5 @@
-import unittest
+from distributions import Binomial
+import pytest
 
 
 class TestBinomialClass(unittest.TestCase):

@@ -1,2 +1,4 @@
-.idea
+.idea/
 .pytest_cache/
+distributions/test/__pycache__/
+distributions/__pycache__/

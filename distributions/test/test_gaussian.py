@@ -35,7 +35,7 @@ def test_load_data():
 
 
 def test_read_file():
-    gaussian = Gaussian.from_file('gaussian_data.txt', is_sample=True)
+    gaussian = Gaussian.from_file('distributions/test/gaussian_data.txt', is_sample=True)
     assert gaussian.mean == sum(gaussian.data) / len(gaussian.data)
     assert pytest.approx(gaussian.std) == 92.87459776004906
     assert len(gaussian.data) == 11
@@ -43,7 +43,7 @@ def test_read_file():
 
 
 def test_pdf():
-    gaussian = Gaussian.from_file('gaussian_data.txt', is_sample=True)
+    gaussian = Gaussian.from_file('distributions/test/gaussian_data.txt', is_sample=True)
     assert round(gaussian.pdf(75), 5) == 0.00429
 
     gaussian = Gaussian(25, 2)

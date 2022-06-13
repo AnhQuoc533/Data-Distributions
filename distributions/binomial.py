@@ -10,6 +10,9 @@ class Binomial(Distribution):
         :param prob: the success probability for each trial.
         """
 
+        if size < 1 or not(0 <= prob <= 1):
+            raise ValueError("Positive integers expected for the parameters.")
+
         self.__n = size
         self.__p = prob
         self.__q = 1. - prob
@@ -108,8 +111,12 @@ class Binomial(Distribution):
 
         return self.pdf(k)
 
-    # def __add__(self, other):
-    #     mean = self.mean + other.mean
-    #     std = (self.std**2 + other.std**2)**0.5
-    #
-    #     return Binomial(mean, std)
+    def __add__(self, other):
+        if type(other) is Binomial:
+            if self.p == other.p:
+                return Binomial(self.n + other.n, self.p)
+            else:
+                ...
+
+        else:
+            return NotImplemented
