@@ -1,2 +1,2 @@
-from .gaussian import NormalDistribution
-from .binomial import BinomialDistribution
+from .gaussian import Gaussian
+from .binomial import Binomial

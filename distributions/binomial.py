@@ -1,68 +1,101 @@
-import math
-from .__distribution import Distribution
+from .__distribution import *
 
 
-class BinomialDistribution(Distribution):
+class Binomial(Distribution):
 
-    def __init__(self, dataset, is_sample=True):
-        """Binomial distribution class for calculating and visualizing a Binomial distribution.
+    def __init__(self, size: int, prob: float):
+        """Binomial distribution class for calculating and visualizing a binomial distribution.
 
-        :param dataset: an 1D array-like numeric dataset.
-        :param is_sample: whether the data represents a sample or population. Default is True.
+        :param size: the number of trials.
+        :param prob: the success probability for each trial.
         """
 
-        super().__init__(dataset, )
+        self.__n = size
+        self.__p = prob
+        self.__q = 1. - prob
+        super().__init__(self.calculate_mean(), self.calculate_std())
 
-    @staticmethod
-    def mean_of(dataset):
-        """Return the mean of the dataset with Binomial distribution.
+    @property
+    def p(self):
+        return self.__p
 
-        :param dataset: an 1D array-like numeric dataset.
-        :return: standard deviation of the dataset.
+    @property
+    def q(self):
+        return self.__q
+
+    @property
+    def n(self):
+        return self.__n
+
+    @classmethod
+    def from_binary_data(cls, dataset):
+        """Return an instance from the input binary dataset (contains only 1 and 0).
+
+        :param dataset: an 1D array-like binary dataset.
+        :return: a new instance of binomial distribution class
         """
 
-        return sum(dataset)/len(dataset)
+        if len(dataset):
+            dataset = np.asarray(dataset, dtype=int).flatten()
+        else:
+            raise ValueError("The input dataset should have at least one element.")
 
-    @staticmethod
-    def standard_deviation_of(dataset, is_sample, mean_value=None):
-        """Return the standard deviation of the dataset with Binomial distribution.
+        if all(np.unique(dataset) == [0, 1]):
+            instance = Binomial(len(dataset), len(dataset[dataset == 1]) / len(dataset))
+            instance._data = dataset
 
-        :param dataset: an 1D array-like numeric dataset.
-        :param is_sample: whether the data represents a sample or population.
-        :param mean_value: mean of the dataset (optional).
-        :return: standard deviation of the dataset.
+        else:
+            raise ValueError("A binary dataset (contains only 1 and 0) expected.")
+
+    @classmethod
+    def from_file(cls, filename: str):
+        """Return an instance from binary dataset (contains only 1 and 0) read from a .txt file.
+        The .txt file should have one number per line.
+
+        :param filename: the name or the path of the .txt file containing the dataset.
+        :return: a new instance of binomial distribution class
         """
 
-        n = len(dataset) - 1 if is_sample else len(dataset)
-        if mean_value is None:
-            mean_value = BinomialDistribution.mean_of(dataset)
+        dataset = []
+        with open(filename) as file:
+            line = file.readline()
+            while line:
+                dataset.append(int(line))
+                line = file.readline()
 
-        variance = sum((x - mean_value)**2 for x in dataset) / n
-        return math.sqrt(variance)
+        return cls.from_binary_data(dataset)
 
-    def z_score(self, x: float):
-        return (x - self.mean) / self.std
+    def calculate_mean(self):
+        """Return the mean of the applied binomial distribution.
 
-    def pdf(self, x):
-        """Probability density function calculator for the Binomial distribution.
-
-        :param x: a point for calculating the probability density function
-
-
-        Returns:
-            float: probability density function output
+        :return: mean value.
         """
 
-        return 1 / (self.std * math.sqrt(2*math.pi)) * math.exp(-0.5 * self.z_score(x)**2)
+        return self.n * self.p
+
+    def calculate_std(self):
+        """Return the standard deviation of the applied binomial distribution.
+
+        :return: standard deviation value.
+        """
+
+        return math.sqrt(self.n * self.p * self.q)
+
+    def pdf(self, x: int):
+        """Return the result of the value mapped into Probability Density Function
+        of the applied binomial distribution.
+
+        For a binomial distribution with n trials and probability p,
+        the Probability Density Function calculates the likelihood of getting x positive outcomes.
+
+        :param x: a point for calculating the Probability Density Function.
+        :return: the output of Probability Density Function.
+        """
+
+        return math.comb(self.n, x) * self.p ** x * self.q ** (self.n - x)
 
     # def __add__(self, other):
     #     mean = self.mean + other.mean
     #     std = (self.std**2 + other.std**2)**0.5
     #
-    #     return BinomialDistribution(mean, std)
-
-
-if __name__ == '__main__':
-    t = BinomialDistribution.from_data_file('data.txt')
-    t.plot_histogram()
-    t.plot_pdf()
+    #     return Binomial(mean, std)

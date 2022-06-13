@@ -1,10 +1,7 @@
-import math
-import numpy as np
-from scipy.integrate import quad
-from .__distribution import Distribution
+from .__distribution import *
 
 
-class NormalDistribution(Distribution):
+class Gaussian(Distribution):
 
     def __init__(self, mean: float, std: float):
         """Gaussian distribution class for calculating and visualizing a Gaussian distribution.
@@ -21,10 +18,14 @@ class NormalDistribution(Distribution):
 
         :param dataset: an 1D array-like numeric dataset.
         :param is_sample: whether the data represents a sample or population.
-        :return: a new instance of NormalDistribution class
+        :return: a new instance of Gaussian distribution class
         """
 
-        dataset = np.asarray(dataset).flatten()
+        if len(dataset):
+            dataset = np.asarray(dataset).flatten()
+        else:
+            raise ValueError("The input dataset should have at least one element.")
+
         instance = cls(cls.mean_of(dataset), cls.standard_deviation_of(dataset, is_sample))
         instance._data = dataset
 
@@ -37,7 +38,7 @@ class NormalDistribution(Distribution):
 
         :param filename: the name or the path of the .txt file containing the dataset.
         :param is_sample: whether the data represents a sample or population.
-        :return: a new instance of NormalDistribution class
+        :return: a new instance of Gaussian distribution class
         """
 
         dataset = []
@@ -69,12 +70,13 @@ class NormalDistribution(Distribution):
         """
 
         n = len(dataset) - 1 if is_sample else len(dataset)
-        mean_value = NormalDistribution.mean_of(dataset)
+        mean_value = Gaussian.mean_of(dataset)
         variance = sum((x - mean_value)**2 for x in dataset) / n
         return math.sqrt(variance)
 
     def z_score(self, x: float):
         """Return the z-score of the input value with respect to the applied Gaussian distribution.
+
         A z-score tells how many standard deviations away an value falls from the mean.
 
         :return: z-score of the input.
@@ -83,7 +85,7 @@ class NormalDistribution(Distribution):
         return (x - self.mean) / self.std
 
     def pdf(self, x: float):
-        """Return the result of the value mapped in to Probability Density Function
+        """Return the result of the value mapped into Probability Density Function
         of the applied Gaussian distribution.
 
         :param x: a point for calculating the Probability Density Function.
@@ -111,10 +113,10 @@ class NormalDistribution(Distribution):
             return quad(self.pdf, a, b)[0]
 
     def __add__(self, other):
-        if type(other) is NormalDistribution:
+        if type(other) is Gaussian:
             mean = self.mean + other.mean
             std = (self.std**2 + other.std**2)**0.5
-            return NormalDistribution(mean, std)
+            return Gaussian(mean, std)
 
         else:
             return NotImplemented

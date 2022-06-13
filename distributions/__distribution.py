@@ -1,4 +1,7 @@
 import matplotlib.pyplot as plt
+import math
+import numpy as np
+from scipy.integrate import quad
 
 
 class Distribution:
