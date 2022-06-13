@@ -2,7 +2,6 @@ from distributions import Gaussian
 import pytest
 gaussian_one = Gaussian(25, 3)
 gaussian_two = Gaussian(30, 4)
-data = [26, 33, 65, 28, 34, 55, 25, 44, 50, 36, 26, 37, 43, 62, 35, 38, 45, 32, 28, 34]
 
 
 def test_init():
@@ -23,6 +22,8 @@ def test_plot_ValueError():
 
 
 def test_load_data():
+    data = [26, 33, 65, 28, 34, 55, 25, 44, 50, 36, 26, 37, 43, 62, 35, 38, 45, 32, 28, 34]
+
     gaussian = Gaussian.from_dataset(data, is_sample=True)
     assert gaussian.mean == 38.8
     assert pytest.approx(gaussian.std) == 11.69615321
@@ -34,8 +35,13 @@ def test_load_data():
     assert len(gaussian.data) == len(data)
 
 
+def test_invalid_data():
+    with pytest.raises(ValueError):
+        _ = Gaussian.from_dataset([], True)
+
+
 def test_read_file():
-    gaussian = Gaussian.from_file('distributions/test/gaussian_data.txt', is_sample=True)
+    gaussian = Gaussian.from_file('gaussian_data.txt', is_sample=True)
     assert gaussian.mean == sum(gaussian.data) / len(gaussian.data)
     assert pytest.approx(gaussian.std) == 92.87459776004906
     assert len(gaussian.data) == 11
@@ -43,7 +49,7 @@ def test_read_file():
 
 
 def test_pdf():
-    gaussian = Gaussian.from_file('distributions/test/gaussian_data.txt', is_sample=True)
+    gaussian = Gaussian.from_file('gaussian_data.txt', is_sample=True)
     assert round(gaussian.pdf(75), 5) == 0.00429
 
     gaussian = Gaussian(25, 2)
@@ -61,6 +67,7 @@ def test_add():
 
     assert new_gaussian.mean == 55
     assert new_gaussian.std == 5
+    assert new_gaussian.data == []
 
 
 def test_TypeError():

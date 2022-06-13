@@ -43,10 +43,10 @@ class Binomial(Distribution):
         else:
             raise ValueError("The input dataset should have at least one element.")
 
-        if all(np.unique(dataset) == [0, 1]):
+        if set(dataset) == {0, 1}:
             instance = Binomial(len(dataset), len(dataset[dataset == 1]) / len(dataset))
             instance._data = dataset
-
+            return instance
         else:
             raise ValueError("A binary dataset (contains only 1 and 0) expected.")
 
@@ -116,7 +116,7 @@ class Binomial(Distribution):
             if self.p == other.p:
                 return Binomial(self.n + other.n, self.p)
             else:
-                ...
+                return NotImplemented
 
         else:
             return NotImplemented

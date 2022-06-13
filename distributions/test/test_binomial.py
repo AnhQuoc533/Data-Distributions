@@ -1,49 +1,88 @@
 from distributions import Binomial
 import pytest
 
+binomial = Binomial(20, .4)
 
-class TestBinomialClass(unittest.TestCase):
-    def setUp(self):
-        self.binomial = Binomial(0.4, 20)
-        self.binomial.read_data_file('binomial_data.txt')
 
-    def test_initialization(self):
-        self.assertEqual(self.binomial.p, 0.4, 'p value incorrect')
-        self.assertEqual(self.binomial.n, 20, 'n value incorrect')
+def test_init():
+    assert binomial.p == .4
+    assert binomial.n == 20
+    assert binomial.q == 1 - .4
+    assert len(binomial.data) == 0
 
-    def test_readdata(self):
-        self.assertEqual(self.binomial.data,\
-         [0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0], 'data not read in correctly')
-    
-    def test_calculatemean(self):
-        mean = self.binomial.calculate_mean()
-        self.assertEqual(mean, 8)
-    
-    def test_calculatestdev(self):
-        stdev = self.binomial.calculate_stdev()
-        self.assertEqual(round(stdev,2), 2.19)
-        
-    def test_replace_stats_with_data(self):
-        p, n = self.binomial.replace_stats_with_data()
-        self.assertEqual(round(p,3), .615)
-        self.assertEqual(n, 13)
-        
-    def test_pdf(self):
-        self.assertEqual(round(self.binomial.pdf(5), 5), 0.07465)
-        self.assertEqual(round(self.binomial.pdf(3), 5), 0.01235)
-    
-        self.binomial.replace_stats_with_data()
-        self.assertEqual(round(self.binomial.pdf(5), 5), 0.05439)
-        self.assertEqual(round(self.binomial.pdf(3), 5), 0.00472)
+    assert binomial.mean == 8
+    assert round(binomial.std, 2) == 2.19
 
-    def test_add(self):
-        binomial_one = Binomial(.4, 20)
-        binomial_two = Binomial(.4, 60)
-        binomial_sum = binomial_one + binomial_two
-        
-        self.assertEqual(binomial_sum.p, .4)
-        self.assertEqual(binomial_sum.n, 80)
-        
-    
-if __name__ == '__main__':
-    unittest.main()
+
+def test_plot_ValueError():
+    with pytest.raises(ValueError):
+        binomial.plot_histogram()
+    with pytest.raises(ValueError):
+        binomial.plot_pdf()
+
+
+def test_load_data():
+    data = [True, False, False, True, False, False]
+    binomial_1 = Binomial.from_binary_data(data)
+    assert binomial_1.n == len(data)
+    assert len(binomial_1.data) == len(data)
+    assert all(binomial_1.data == [1, 0, 0, 1, 0, 0])
+    assert binomial_1.p == 2 / 6
+
+    assert binomial_1.mean == 2
+    assert pytest.approx(binomial_1.std) == 1.1547
+
+    data = [1., 0., 0., 1, .0, .0]
+    binomial_2 = Binomial.from_binary_data(data)
+    assert binomial_2.n == len(data)
+    assert len(binomial_2.data) == len(data)
+    assert all(binomial_2.data == [1, 0, 0, 1, 0, 0])
+    assert binomial_2.p == 2 / 6
+
+
+def test_invalid_data():
+    with pytest.raises(ValueError):
+        _ = Binomial.from_binary_data([])
+
+    with pytest.raises(ValueError):
+        _ = Binomial.from_binary_data([1, 2, 3, 4, 5])
+
+    with pytest.raises(ValueError):
+        _ = Binomial.from_binary_data(['1', '2', '3, 4, 5'])
+
+
+def test_read_file():
+    binomial_1 = Binomial.from_file('binomial_data.txt')
+    assert len(binomial_1.data) == binomial_1.n == 13
+    assert all(binomial_1.data == [0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0])
+    assert round(binomial_1.p, 3) == .615
+
+
+def test_probability():
+    assert round(binomial.probability(5), 5) == .07465
+    assert round(binomial.probability(3), 5) == .01235
+
+    binomial_1 = Binomial.from_file('binomial_data.txt')
+    assert round(binomial_1.probability(5), 5) == .05439
+    assert round(binomial_1.probability(3), 5) == .00472
+
+    binomial_2 = Binomial(60, .15)
+    assert round(binomial_2.probability(7), 2) == .12
+
+
+def test_add():
+    binomial_1 = Binomial(20, .4)
+    binomial_2 = Binomial(60, .4)
+    binomial_sum = binomial_1 + binomial_2
+    assert binomial_sum.p == .4
+    assert binomial_sum.n == 80
+    assert binomial_sum.data == []
+
+    with pytest.raises(TypeError):
+        _ = 1 + binomial_1
+
+    with pytest.raises(TypeError):
+        _ = binomial_1 + 8
+
+    with pytest.raises(TypeError):
+        _ = Binomial(20, .5) + binomial_2
