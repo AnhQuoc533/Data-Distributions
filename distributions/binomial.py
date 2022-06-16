@@ -10,13 +10,15 @@ class Binomial(Distribution):
         :param prob: the success probability for each trial.
         """
 
-        if size < 1 or not(0 <= prob <= 1):
-            raise ValueError("Positive integers expected for the parameters.")
+        if size < 1:
+            raise ValueError("Positive integers expected for the size parameter.")
+        elif not (0 <= prob <= 1):
+            raise ValueError("The probability must be between 0 and 1.")
 
         self.__n = size
         self.__p = prob
         self.__q = 1. - prob
-        super().__init__(self.calculate_mean(), self.calculate_std())
+        super().__init__(self.get_mean(), self.get_std())
 
     @property
     def p(self):
@@ -68,7 +70,7 @@ class Binomial(Distribution):
 
         return cls.from_binary_data(dataset)
 
-    def calculate_mean(self):
+    def get_mean(self):
         """Return the mean of the applied binomial distribution.
 
         :return: mean value.
@@ -76,7 +78,7 @@ class Binomial(Distribution):
 
         return self.n * self.p
 
-    def calculate_std(self):
+    def get_std(self):
         """Return the standard deviation of the applied binomial distribution.
 
         :return: standard deviation value.
@@ -110,6 +112,10 @@ class Binomial(Distribution):
         """
 
         return self.pdf(k)
+
+    def plot_pdf(self, n_spaces=50):
+        """Not available."""
+        ...
 
     def __add__(self, other):
         if type(other) is Binomial:

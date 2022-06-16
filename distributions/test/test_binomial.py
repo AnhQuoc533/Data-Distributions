@@ -17,8 +17,10 @@ def test_init():
 def test_plot_ValueError():
     with pytest.raises(ValueError):
         binomial.plot_histogram()
-    with pytest.raises(ValueError):
-        binomial.plot_pdf()
+
+
+def test_plot_pdf():
+    assert binomial.plot_pdf() is None
 
 
 def test_load_data():
@@ -38,6 +40,8 @@ def test_load_data():
     assert len(binomial_2.data) == len(data)
     assert all(binomial_2.data == [1, 0, 0, 1, 0, 0])
     assert binomial_2.p == 2 / 6
+
+    binomial_1.plot_histogram()
 
 
 def test_invalid_data():
