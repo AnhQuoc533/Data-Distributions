@@ -15,15 +15,15 @@ class Bernoulli(Binomial):
 
     @classmethod
     def from_binary_data(cls, dataset):
-        """Not available for Bernoulli distribution."""
+        """Not available."""
         ...
 
     @classmethod
     def from_file(cls, filename: str):
-        """Not available for Bernoulli distribution."""
+        """Not available."""
         ...
 
-    def pdf(self, k: int):
+    def pmf(self, k: int):
         """Return p if k = 1 or 1 - p if k = 0.
 
         :param k: 0 (failure) or 1 (success).
@@ -44,7 +44,7 @@ class Bernoulli(Binomial):
         :return: probability of the success/failure.
         """
 
-        return self.pdf(int(is_success))
+        return self.pmf(int(is_success))
 
     def plot_histogram(self):
         """Not available."""

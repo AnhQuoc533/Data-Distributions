@@ -1,4 +1,5 @@
 from .__distribution import *
+from scipy.integrate import quad
 
 
 class Gaussian(Distribution):
@@ -111,6 +112,47 @@ class Gaussian(Distribution):
             if a > b:
                 a, b = b, a
             return quad(self.pdf, a, b)[0]
+
+    def plot_pdf(self, n_spaces=50):
+        """Plot the normalized histogram and a the Probability Density Function along the same range
+
+        :param n_spaces: number of data points
+        """
+
+        if len(self.data):
+            min_range = min(self.data)
+            max_range = max(self.data)
+
+            # calculates the interval between x values
+            interval = (max_range - min_range) / n_spaces
+
+            x = []
+            y = []
+
+            # calculate the x values to visualize
+            for i in range(n_spaces):
+                tmp = min_range + interval * i
+                x.append(tmp)
+                y.append(self.pdf(tmp))
+
+            # make the plots
+            fig, axes = plt.subplots(ncols=2, figsize=(10, 4), sharey=True)
+            fig.subplots_adjust(wspace=0.1)
+
+            # plot the normalized histogram
+            axes[0].hist(self.data, density=True)
+            axes[0].set_title('Normalized Histogram of Data')
+            axes[0].set_ylabel('Density')
+
+            # plot the probability density function
+            axes[1].plot(x, y)
+            axes[1].set_title('Distribution for \n Mean and Standard Deviation')
+            plt.show()
+
+        else:
+            raise ValueError('Load the dataset first to plot the graphs.')
+
+        # return x, y
 
     def __add__(self, other):
         if type(other) is Gaussian:

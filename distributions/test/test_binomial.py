@@ -14,13 +14,26 @@ def test_init():
     assert round(binomial.std, 2) == 2.19
 
 
+def test_invalid_init():
+    with pytest.raises(ValueError):
+        _ = Binomial(0, 1)
+
+    with pytest.raises(ValueError):
+        _ = Binomial(5, 1.5)
+
+    with pytest.raises(ValueError):
+        _ = Binomial(-1, 0.5)
+
+    with pytest.raises(ValueError):
+        _ = Binomial(7, -0.25)
+
+    with pytest.raises(ValueError):
+        _ = Binomial(5.5, 0.3)
+
+
 def test_plot_ValueError():
     with pytest.raises(ValueError):
         binomial.plot_histogram()
-
-
-def test_plot_pdf():
-    assert binomial.plot_pdf() is None
 
 
 def test_load_data():

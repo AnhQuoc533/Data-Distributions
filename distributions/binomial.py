@@ -10,7 +10,7 @@ class Binomial(Distribution):
         :param prob: the success probability for each trial.
         """
 
-        if size < 1:
+        if size < 1 or type(size) is not int:
             raise ValueError("Positive integers expected for the size parameter.")
         elif not (0 <= prob <= 1):
             raise ValueError("The probability must be between 0 and 1.")
@@ -18,7 +18,7 @@ class Binomial(Distribution):
         self.__n = size
         self.__p = prob
         self.__q = 1. - prob
-        super().__init__(self.get_mean(), self.get_std())
+        super().__init__(self.get_mean(), math.sqrt(self.get_variance()))
 
     @property
     def p(self):
@@ -78,15 +78,15 @@ class Binomial(Distribution):
 
         return self.n * self.p
 
-    def get_std(self):
-        """Return the standard deviation of the applied binomial distribution.
+    def get_variance(self):
+        """Return the variance of the applied binomial distribution.
 
-        :return: standard deviation value.
+        :return: variance value.
         """
 
-        return math.sqrt(self.n * self.p * self.q)
+        return self.n * self.p * self.q
 
-    def pdf(self, x: int):
+    def pmf(self, x: int):
         """Return the result of the value mapped into Probability Mass Function
         of the applied binomial distribution.
 
@@ -111,11 +111,7 @@ class Binomial(Distribution):
         :return: probability of k.
         """
 
-        return self.pdf(k)
-
-    def plot_pdf(self, n_spaces=50):
-        """Not available."""
-        ...
+        return self.pmf(k)
 
     def __add__(self, other):
         if type(other) is Binomial:
