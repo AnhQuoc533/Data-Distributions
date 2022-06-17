@@ -40,7 +40,7 @@ class Bernoulli(Binomial):
     def probability(self, is_success=True):
         """Return the probability for the success/failure.
 
-        :param is_success: whether the trial is successful or failed.
+        :param is_success: whether the trial is a success or failure.
         :return: probability of the success/failure.
         """
 
