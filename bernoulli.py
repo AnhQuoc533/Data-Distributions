@@ -24,7 +24,7 @@ class Bernoulli(Binomial):
         ...
 
     def pmf(self, k: int):
-        """Return p if k = 1 or 1 - p if k = 0.
+        """Return the probability p if k = 1 or the probability q if k = 0.
 
         :param k: 0 (failure) or 1 (success).
         :return: the output of Probability Mass Function.

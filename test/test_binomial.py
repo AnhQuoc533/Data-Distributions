@@ -1,4 +1,4 @@
-from distributions import Binomial
+from ..binomial import Binomial
 import pytest
 
 binomial = Binomial(20, .4)

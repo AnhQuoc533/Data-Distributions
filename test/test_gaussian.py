@@ -1,4 +1,4 @@
-from distributions import Gaussian
+from ..gaussian import Gaussian
 import pytest
 gaussian_one = Gaussian(25, 3)
 gaussian_two = Gaussian(30, 4)
