@@ -76,7 +76,7 @@ class Gaussian(Distribution):
         return math.sqrt(variance)
 
     def z_score(self, x: float):
-        """Return the z-score of the input value with respect to the applied Gaussian distribution.
+        """Return the z-score of the input value with respect to the Gaussian instance.
 
         A z-score tells how many standard deviations away an value falls from the mean.
 
@@ -87,7 +87,7 @@ class Gaussian(Distribution):
 
     def pdf(self, x: float):
         """Return the result of the value mapped into Probability Density Function
-        of the applied Gaussian distribution.
+        of the Gaussian instance.
 
         :param x: a point for calculating the Probability Density Function.
         :return: the output of Probability Density Function.
@@ -148,11 +148,10 @@ class Gaussian(Distribution):
             axes[1].plot(x, y)
             axes[1].set_title('Distribution for \n Mean and Standard Deviation')
             plt.show()
+            # return x, y
 
         else:
             raise ValueError('Load the dataset first to plot the graphs.')
-
-        # return x, y
 
     def __add__(self, other):
         if type(other) is Gaussian:

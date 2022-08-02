@@ -39,7 +39,7 @@ class Distribution:
             plt.show()
 
         else:
-            raise ValueError('Load the dataset first to plot the graph.')
+            raise ValueError('Load the dataset to the instance first to plot the graph.')
 
     def __str__(self):
         """Return the characteristics of the Distribution's instance."""

@@ -17,8 +17,8 @@ class Binomial(Distribution):
 
         self.__n = size
         self.__p = prob
-        self.__q = 1. - prob
-        super().__init__(self.get_mean(), math.sqrt(self.get_variance()))
+        self.__q = 1 - prob
+        super().__init__(mean=self.n*self.p, std=(self.n*self.p*self.q)**0.5)
 
     @property
     def p(self):
@@ -34,10 +34,10 @@ class Binomial(Distribution):
 
     @classmethod
     def from_binary_data(cls, dataset):
-        """Return an instance from the input binary dataset (contains only 1 and 0).
+        """Return a binomial instance built from the input binary dataset (contains only 1 and 0).
 
         :param dataset: an 1D array-like binary dataset.
-        :return: a new instance of binomial distribution class
+        :return: a new instance of Binomial class
         """
 
         if len(dataset):
@@ -54,11 +54,11 @@ class Binomial(Distribution):
 
     @classmethod
     def from_file(cls, filename: str):
-        """Return an instance from binary dataset (contains only 1 and 0) read from a .txt file.
+        """Return a binomial instance built from the binary dataset (contains only 1 and 0) read from .txt file.
         The .txt file should have one number per line.
 
         :param filename: the name or the path of the .txt file containing the dataset.
-        :return: a new instance of binomial distribution class
+        :return: a new instance of Binomial class
         """
 
         dataset = []
@@ -70,28 +70,12 @@ class Binomial(Distribution):
 
         return cls.from_binary_data(dataset)
 
-    def get_mean(self):
-        """Return the mean of the applied binomial distribution.
-
-        :return: mean value.
-        """
-
-        return self.n * self.p
-
-    def get_variance(self):
-        """Return the variance of the applied binomial distribution.
-
-        :return: variance value.
-        """
-
-        return self.n * self.p * self.q
-
     def pmf(self, x: int):
         """Return the result of the value mapped into Probability Mass Function
-        of the applied binomial distribution.
+        of the Binomial instance.
 
         For a binomial distribution with n trials and probability p,
-        the Probability Density Function calculates the likelihood of getting x positive outcomes.
+        the Probability Mass Function calculates the likelihood of getting x positive outcomes.
 
         :param x: a point for calculating the Probability Mass Function.
         :return: the output of Probability Mass Function.
@@ -102,7 +86,7 @@ class Binomial(Distribution):
         elif x > self.n:
             raise ValueError(f"The input value must be smaller than or equal {self.n}.")
 
-        return math.comb(self.n, x) * self.p ** x * self.q ** (self.n - x)
+        return math.comb(self.n, x) * self.p**x * self.q**(self.n - x)
 
     def probability(self, k: int):
         """Return the probability of getting exactly k successes in n independent Bernoulli trials.
