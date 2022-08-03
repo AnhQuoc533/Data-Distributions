@@ -40,7 +40,7 @@ class Gaussian(Distribution):
         :return: a new instance of Gaussian distribution class
         """
 
-        return cls.from_dataset(super().import_dataset(filename), is_sample)
+        return cls.from_dataset(cls.import_dataset(filename), is_sample)
 
     @staticmethod
     def mean_of(dataset):

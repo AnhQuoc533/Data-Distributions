@@ -62,7 +62,7 @@ class Binomial(Distribution):
         :return: a new instance of Binomial class
         """
 
-        return cls.from_binary_data(super().import_dataset(filename))
+        return cls.from_binary_data(cls.import_dataset(filename))
 
     def pmf(self, x: int):
         """Return the result of the value mapped into Probability Mass Function
@@ -90,6 +90,19 @@ class Binomial(Distribution):
         """
 
         return self.pmf(k)
+
+    def plot_histogram(self):
+        """Plot the histogram of the dataset."""
+
+        if len(self._data):
+            plt.bar(x=['0', '1'], height=[self.__q*self.__n, self.mean])
+            plt.title('Histogram')
+            plt.xlabel('outcome')
+            plt.ylabel('count')
+            plt.show()
+
+        else:
+            raise ValueError('Load the dataset to the instance first to plot the graph.')
 
     def __add__(self, other):
         if type(other) is Binomial:

@@ -31,8 +31,8 @@ class Distribution:
     def std(self):
         return self.__std
 
-    @classmethod
-    def import_dataset(cls, filename: str):
+    @staticmethod
+    def import_dataset(filename: str):
         """Return a list of numbers read from a .txt file.
         The .txt file should have one number (real or integer) per line.
 
@@ -52,7 +52,7 @@ class Distribution:
 
         if len(self._data):
             plt.hist(self._data)
-            plt.title('Histogram of Data')
+            plt.title('Histogram')
             plt.xlabel('data')
             plt.ylabel('count')
             plt.show()
