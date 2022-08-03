@@ -1,4 +1,4 @@
-from ..gaussian import Gaussian
+from .. import Gaussian
 import pytest
 gaussian_one = Gaussian(25, 3)
 gaussian_two = Gaussian(30, 4)
@@ -35,6 +35,7 @@ def test_load_data():
     assert len(gaussian.data) == len(data)
 
     gaussian.plot_histogram()
+    gaussian.plot_pdf()
 
 
 def test_invalid_data():

@@ -105,7 +105,7 @@ class Gaussian(Distribution):
             return quad(self.pdf, a, b)[0]
 
     def plot_pdf(self, n_spaces=50):
-        """Plot the normalized histogram and a the Probability Density Function along the same range
+        """Plot the normalized histogram and the Probability Density Function along the same range.
 
         :param n_spaces: number of data points
         """
@@ -114,14 +114,13 @@ class Gaussian(Distribution):
             min_range = min(self.data)
             max_range = max(self.data)
 
-            # calculates the interval between x values
+            # calculates the interval between values
             interval = (max_range - min_range) / n_spaces
 
             x = []
             y = []
-
-            # calculate the x values to visualize
             for i in range(n_spaces):
+                # Calculate the x to visualize
                 tmp = min_range + interval * i
                 x.append(tmp)
                 y.append(self.pdf(tmp))
@@ -133,11 +132,11 @@ class Gaussian(Distribution):
             # plot the normalized histogram
             axes[0].hist(self.data, density=True)
             axes[0].set_title('Normalized Histogram of Data')
-            axes[0].set_ylabel('Density')
+            axes[0].set_ylabel('density')
 
             # plot the probability density function
             axes[1].plot(x, y)
-            axes[1].set_title('Distribution for \n Mean and Standard Deviation')
+            axes[1].set_title('Distribution of \n Mean and Standard Deviation')
             plt.show()
             # return x, y
 

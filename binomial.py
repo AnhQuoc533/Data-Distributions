@@ -104,6 +104,27 @@ class Binomial(Distribution):
         else:
             raise ValueError('Load the dataset to the instance first to plot the graph.')
 
+    def plot_pmf(self):
+        """Plot the Probability Mass Function of the instance."""
+
+        if len(self.data):
+            x = []
+            y = []
+            for i in range(self.__n + 1):
+                x.append(i)
+                y.append(self.pmf(i))
+
+            # plot the probability mass function
+            plt.plot(x, y)
+            plt.title('Distribution of outcomes')
+            plt.xlabel('outcome')
+            plt.ylabel('probability')
+            plt.show()
+            # return x, y
+
+        else:
+            raise ValueError('Load the dataset first to plot the graphs.')
+
     def __add__(self, other):
         if type(other) is Binomial:
             if self.p == other.p:

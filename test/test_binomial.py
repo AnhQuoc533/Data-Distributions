@@ -1,4 +1,4 @@
-from ..binomial import Binomial
+from .. import Binomial
 import pytest
 
 binomial = Binomial(20, .4)
@@ -34,6 +34,8 @@ def test_invalid_init():
 def test_plot_ValueError():
     with pytest.raises(ValueError):
         binomial.plot_histogram()
+    with pytest.raises(ValueError):
+        binomial.plot_pmf()
 
 
 def test_load_data():
@@ -55,6 +57,7 @@ def test_load_data():
     assert binomial_2.p == 2 / 6
 
     binomial_1.plot_histogram()
+    binomial_1.plot_pmf()
 
 
 def test_invalid_data():
