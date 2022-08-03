@@ -20,6 +20,9 @@ class Distribution:
     def data(self):
         return self._data
 
+    @data.setter
+    def data(self, dataset): ...
+
     @property
     def mean(self):
         return self.__mean
@@ -28,11 +31,27 @@ class Distribution:
     def std(self):
         return self.__std
 
+    @classmethod
+    def import_dataset(cls, filename: str):
+        """Return a list of numbers read from a .txt file.
+        The .txt file should have one number (real or integer) per line.
+
+        :param filename: the name or the path of the .txt file containing the dataset.
+        :return: a list of numbers
+        """
+
+        dataset = []
+        with open(filename) as file:
+            for line in file:
+                dataset.append(eval(line))
+
+        return dataset
+
     def plot_histogram(self):
         """Plot the histogram of the dataset."""
 
-        if len(self.data):
-            plt.hist(self.data)
+        if len(self._data):
+            plt.hist(self._data)
             plt.title('Histogram of Data')
             plt.xlabel('data')
             plt.ylabel('count')

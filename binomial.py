@@ -34,19 +34,20 @@ class Binomial(Distribution):
 
     @classmethod
     def from_binary_data(cls, dataset):
-        """Return a binomial instance built from the input binary dataset (contains only 1 and 0).
+        """Return a binomial instance built from the input binary dataset (contains only 1 and 0)
+        or (True and False).
 
         :param dataset: an 1D array-like binary dataset.
         :return: a new instance of Binomial class
         """
 
-        if len(dataset):
-            dataset = np.asarray(dataset, dtype=int).flatten()
-        else:
+        if len(dataset) == 0:
             raise ValueError("The input dataset should have at least one element.")
+        elif set(dataset) == {True, False}:
+            dataset = [int(x) for x in dataset]
 
         if set(dataset) == {0, 1}:
-            instance = Binomial(len(dataset), len(dataset[dataset == 1]) / len(dataset))
+            instance = Binomial(len(dataset), sum(dataset) / len(dataset))
             instance._data = dataset
             return instance
         else:
@@ -61,14 +62,7 @@ class Binomial(Distribution):
         :return: a new instance of Binomial class
         """
 
-        dataset = []
-        with open(filename) as file:
-            line = file.readline()
-            while line:
-                dataset.append(int(line))
-                line = file.readline()
-
-        return cls.from_binary_data(dataset)
+        return cls.from_binary_data(super().import_dataset(filename))
 
     def pmf(self, x: int):
         """Return the result of the value mapped into Probability Mass Function

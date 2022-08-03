@@ -34,6 +34,8 @@ def test_load_data():
     assert pytest.approx(gaussian.std) == 11.4
     assert len(gaussian.data) == len(data)
 
+    gaussian.plot_histogram()
+
 
 def test_invalid_data():
     with pytest.raises(ValueError):

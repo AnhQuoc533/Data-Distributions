@@ -41,7 +41,7 @@ def test_load_data():
     binomial_1 = Binomial.from_binary_data(data)
     assert binomial_1.n == len(data)
     assert len(binomial_1.data) == len(data)
-    assert all(binomial_1.data == [1, 0, 0, 1, 0, 0])
+    assert binomial_1.data == [1, 0, 0, 1, 0, 0]
     assert binomial_1.p == 2 / 6
 
     assert binomial_1.mean == 2
@@ -51,7 +51,7 @@ def test_load_data():
     binomial_2 = Binomial.from_binary_data(data)
     assert binomial_2.n == len(data)
     assert len(binomial_2.data) == len(data)
-    assert all(binomial_2.data == [1, 0, 0, 1, 0, 0])
+    assert binomial_2.data == [1, 0, 0, 1, 0, 0]
     assert binomial_2.p == 2 / 6
 
     binomial_1.plot_histogram()
@@ -71,7 +71,7 @@ def test_invalid_data():
 def test_read_file():
     binomial_1 = Binomial.from_file('binomial_data.txt')
     assert len(binomial_1.data) == binomial_1.n == 13
-    assert all(binomial_1.data == [0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0])
+    assert binomial_1.data == [0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0]
     assert round(binomial_1.p, 3) == .615
 
 

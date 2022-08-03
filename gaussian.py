@@ -22,9 +22,7 @@ class Gaussian(Distribution):
         :return: a new instance of Gaussian distribution class
         """
 
-        if len(dataset):
-            dataset = np.asarray(dataset).flatten()
-        else:
+        if len(dataset) == 0:
             raise ValueError("The input dataset should have at least one element.")
 
         instance = cls(cls.mean_of(dataset), cls.standard_deviation_of(dataset, is_sample))
@@ -42,14 +40,7 @@ class Gaussian(Distribution):
         :return: a new instance of Gaussian distribution class
         """
 
-        dataset = []
-        with open(filename) as file:
-            line = file.readline()
-            while line:
-                dataset.append(float(line))
-                line = file.readline()
-
-        return cls.from_dataset(dataset, is_sample)
+        return cls.from_dataset(super().import_dataset(filename), is_sample)
 
     @staticmethod
     def mean_of(dataset):
