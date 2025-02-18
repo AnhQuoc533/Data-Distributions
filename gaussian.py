@@ -137,6 +137,7 @@ class Gaussian(Distribution):
             # plot the probability density function
             axes[1].plot(x, y)
             axes[1].set_title('Distribution of \n Mean and Standard Deviation')
+            
             plt.show()
             # return x, y
 
